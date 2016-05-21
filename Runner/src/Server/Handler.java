@@ -64,7 +64,7 @@ public class Handler implements HttpHandler{
         }
         else
         {
-            // adaptar aos movimentos do jogo
+            response = "Olá enviei";
         }
 
         // read(is); // .. read the request body
@@ -76,7 +76,27 @@ public class Handler implements HttpHandler{
 
     }
 
+public void sendMessage(String response, HttpExchange t)
+{
+    ArrayList<InetAddress>contributors = svr.getContributors();
 
+    for(int i=0; i < contributors.size();i++)
+    {
+        if(!contributors.listIterator(i).next().equals(t.getRemoteAddress().getAddress()))
+        {
+            String msgToSend = response;
+            try{
+                DatagramSocket serverSocket =  new DatagramSocket();
+                DatagramPacket msgPacket = new DatagramPacket(response.getBytes(),response.getBytes().length,contributors.listIterator(i).next(),9003);
+                serverSocket.send(msgPacket);
+                System.out.println("Enviou");
+            }catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+}
 
 
 
@@ -114,31 +134,6 @@ public class Handler implements HttpHandler{
     }
 
 
-
-    public String getFaixa(String path, HttpExchange t){
-
-        InetSocketAddress temp = t.getRemoteAddress();
-
-        if(!svr.getContributors().contains(temp.getAddress()))
-            return "Not Joined, please join session before playing.\n";
-
-        String[] faixa = path.split("/");
-
-        int num = Integer.parseInt(faixa[2].split("ff")[1]);
-
-
-        if(num < 1 || num > 64)
-        {
-            System.out.println("invalid track");
-
-        }
-
-
-        return faixa[2];
-
-
-
-    }
 
 
     public boolean joinClient(HttpExchange t) throws MalformedURLException
