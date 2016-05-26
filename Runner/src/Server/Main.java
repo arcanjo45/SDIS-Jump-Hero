@@ -5,14 +5,18 @@ package Server;
  */
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+
 public class Main {
 
-    static public void main (String[] argr) throws IOException{
+    static public void main (String[] argr) throws Exception{
 
         System.out.println("entered main");
-        Server server = new Server(new InetSocketAddress(9001));
+        Server server = new Server();
         server.start();
 
     }
 }
+
+

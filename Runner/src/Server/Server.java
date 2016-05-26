@@ -1,44 +1,48 @@
 package Server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.security.KeyStore;
 import java.util.ArrayList;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsServer;
 
 
-/**
- * Created by Pedro on 13/05/2016.
- */
 public class Server {
 
     private InetSocketAddress port;
 
-    //private Handler myhandler;
-
-    private ArrayList<InetAddress>contributors;
-
-    private HttpServer server;
-
-    static public int counter = 2;
-
-    public Server(InetSocketAddress port ) throws IOException{
-
-        contributors = new ArrayList<InetAddress>();
-
-        System.out.println("started server");
-        //myhanlder = new Handler(this);
-
-        server = HttpServer.create(port,0);
-
-        //server.createContext("x",myhandler),
-
-        server.setExecutor(null); // creates a default executor
 
 
+    private HttpsServer server;
 
 
+     Server() throws Exception {
+		server = HttpsServer.create(new InetSocketAddress(443), 0);
+		server.setHttpsConfigurator(new HttpsConfigurator(createSSLContext()));
+		server.createContext("/api", new Handler());
+		server.setExecutor(null);
+		
+	}
+	
+	private static SSLContext createSSLContext() throws Exception {
+		SSLContext sslContext = SSLContext.getInstance("TLS");
+	    char[] keystorePassword = "123456".toCharArray();
+	    KeyStore ks = KeyStore.getInstance("JKS");
+	    ks.load(new FileInputStream("assets/server.keys"), keystorePassword);
+	    KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+	    kmf.init(ks, keystorePassword);
+	    sslContext.init(kmf.getKeyManagers(), null, null);
+	    return sslContext;
     }
 
     public void start()
@@ -55,22 +59,5 @@ public class Server {
     {
         this.port = port;
     }
-/*
-    public Handler getMyHandler()
-    {
-        return myhandler;
-    }
 
-    public void setMyHandler(Handler myHandler) {
-		this.myHandler = myHandler;
-	}
-*/
-
-    public ArrayList<InetAddress> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(ArrayList<InetAddress> contributors) {
-        this.contributors = contributors;
-    }
 }
