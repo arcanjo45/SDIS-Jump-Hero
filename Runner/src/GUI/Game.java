@@ -1,6 +1,8 @@
 package GUI;
 import javax.swing.*;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import LOGIC.Avatar;
 import LOGIC.ListBox;
 import LOGIC.Score;
@@ -10,6 +12,7 @@ import sun.audio.ContinuousAudioDataStream;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class Game extends JPanel implements ActionListener, KeyListener {
@@ -21,12 +24,13 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	LoadFiles loadfiles;
 	Menu menu;
 	HighScores highscores;
-	Avatar avatar;
-	Avatar avatar2;
+	//Avatar avatar;
+	//Avatar avatar2;
 	ListBox listbox;	
 	Score score;
 	Instructions instructions;
-
+	ArrayList<Avatar> listPlayers;
+	
 	public static enum STATE{
 		MENU,
 		GAME,
@@ -42,11 +46,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	 * Game Constructor
 	 */
 	public Game(){
-
+		listPlayers = new ArrayList<Avatar>();
+		//avatar = new Avatar(0, 475, getLoadFiles().getAvatarR()[0], this);
+		//listPlayers.add(avatar);
 		requestFocus();
 		t.start();
 		loadfiles = new LoadFiles();
-		avatar = new Avatar(0, 475, getLoadFiles().getAvatarR()[0], this);
 		//avatar2 = new Avatar(0, 475, getLoadFiles().getAvatarR()[0], this);
 		listbox = new ListBox(this);
 		score = new Score(this);
@@ -56,7 +61,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		AudioPlayer musicPlayer = AudioPlayer.player;
 		try {
 			ContinuousAudioDataStream loop = new ContinuousAudioDataStream(getLoadFiles().getBacksound().getData());
-			musicPlayer.start(loop);
+			//musicPlayer.start(loop);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,7 +88,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			g.drawImage(getLoadFiles().getFloor(), 0, 0, 500, 510, this);
 			listbox.draw(g);
 			score.draw(g);
-			avatar.draw(g);
+			for(int i=0;i<listPlayers.size();i++){
+				listPlayers.get(i).draw(g);
+			}
+			//avatar.draw(g);
 //			avatar2.draw(g);
 			g.drawImage(getLoadFiles().getOnlyfloor(), 0, 500, 500, 10, this);
 			g.setFont(new Font("Aharoni", Font.BOLD, 18)); 
@@ -109,9 +117,12 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	 * Updates the screen
 	 */
 	public void frame(){
+		for(int i=0;i<listPlayers.size();i++){
+			listPlayers.get(i).frame();
+		}
 		score.frame();
 		listbox.frame();
-		avatar.frame();
+		//avatar.frame();
 		//avatar2.frame();
 	}
 
@@ -137,10 +148,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
 //				avatar2.setVelX(2);
-				avatar.setVelX(-2);
+		//		avatar.setVelX(-2);
 				break;
 			case KeyEvent.VK_RIGHT:
-				avatar.setVelX(2);
+				//avatar.setVelX(2);
 				break;
 			}
 		}
@@ -172,10 +183,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		if (State == STATE.GAME){
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-				avatar.setVelX(0);
+				//avatar.setVelX(0);
 				break;
 			case KeyEvent.VK_RIGHT:
-				avatar.setVelX(0);
+				//avatar.setVelX(0);
 				break;
 			}
 		}
@@ -197,8 +208,14 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	 */
 	public void resetvariaveis() {
 		//avatar reset
+		for(int i=0;i<listPlayers.size();i++){
+			listPlayers.get(i).setX(0);
+			listPlayers.get(i).setX(475);
+
+		}
+		/*
 		getAvatar().setX(0);
-		getAvatar().setY(475);	
+		getAvatar().setY(475);	*/
 		//list of box all empty
 		while (getListbox().getlbox().size() > 0){
 			int i = 0;
@@ -222,9 +239,9 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	 * 
 	 * @return user controlled sprite
 	 */
-	public Avatar getAvatar() {
+	/*public Avatar getAvatar() {
 		return avatar;
-	}
+	}*/
 
 	/**
 	 * 
@@ -264,5 +281,16 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 	 */
 	public int getFrame() {
 		return frame;
+	}
+	
+	public ArrayList<Avatar> getListPlayers(){
+		return listPlayers;
+		}
+	
+	public void startPlayer(){
+			Avatar av = new Avatar(0, 475, getLoadFiles().getAvatarR()[0], this);
+			listPlayers.add(av);
+		
+		
 	}
 } 

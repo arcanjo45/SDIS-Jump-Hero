@@ -1,7 +1,7 @@
 package GUI;
 
 public class Player implements Comparable<Player> {
-	
+
 	String nickname;
 	int score;
 	

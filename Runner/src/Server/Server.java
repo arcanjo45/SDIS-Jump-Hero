@@ -1,76 +1,40 @@
 package Server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.security.KeyStore;
 import java.util.ArrayList;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsServer;
+
+import GUI.Game;
 
 
-/**
- * Created by Pedro on 13/05/2016.
- */
+
 public class Server {
-
-    private InetSocketAddress port;
-
-    //private Handler myhandler;
-
-    private ArrayList<InetAddress>contributors;
 
     private HttpServer server;
 
-    static public int counter = 2;
-
-    public Server(InetSocketAddress port ) throws IOException{
-
-        contributors = new ArrayList<InetAddress>();
-
-        System.out.println("started server");
-        //myhanlder = new Handler(this);
-
-        server = HttpServer.create(port,0);
-
-        //server.createContext("x",myhandler),
-
-        server.setExecutor(null); // creates a default executor
-
-
-
-
-    }
+     public Server(Game game) throws Exception {
+		server = HttpServer.create(new InetSocketAddress(8000), 0);
+		//server.setHttpsConfigurator(new HttpsConfigurator(createSSLContext()));
+		server.createContext("/api", new Handler(game));
+		server.setExecutor(null);
+		
+	}
 
     public void start()
     {
         server.start();
     }
 
-    public InetSocketAddress getPort()
-    {
-        return port;
-    }
-
-    public void setPort(InetSocketAddress port)
-    {
-        this.port = port;
-    }
-/*
-    public Handler getMyHandler()
-    {
-        return myhandler;
-    }
-
-    public void setMyHandler(Handler myHandler) {
-		this.myHandler = myHandler;
-	}
-*/
-
-    public ArrayList<InetAddress> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(ArrayList<InetAddress> contributors) {
-        this.contributors = contributors;
-    }
 }
