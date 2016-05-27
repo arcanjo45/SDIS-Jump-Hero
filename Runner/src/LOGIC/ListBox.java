@@ -130,7 +130,11 @@ public class ListBox {
 				linha = false;
 				cont = 0;	
 				game.getScore().setScore(game.getScore().getScore() + 1);
-				game.getAvatar().setY(game.getAvatar().getY() + 50);
+				
+				for(int i=0;i<game.getListPlayers().size();i++){
+					game.getListPlayers().get(i).setY(game.getListPlayers().get(i).getY() + 50);
+				}
+				
 			}
 		}
 		for (int j = 0; j < floor.length; j++){

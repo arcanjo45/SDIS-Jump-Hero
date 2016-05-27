@@ -42,11 +42,13 @@ public class Score {
 				TempPoint.setY(470 - (game.getListbox().getFloor()[TempPoint.getColuna()] * 50));
 			if (Physics.Collision(game.getListbox().getlbox(), TempPoint)) //se uma caixa lhe cair em cima remove
 				removePoint(TempPoint);
-			if (Physics.Collision(TempPoint, game.getAvatar())){
+			for(int j=0;j<game.getListPlayers().size();j++){
+			if (Physics.Collision(TempPoint, game.getListPlayers().get(j))){
 				AudioPlayer player = AudioPlayer.player;
 				player.start(game.getLoadFiles().getBoxsound());
 				score += TempPoint.getValue();
 				removePoint(TempPoint);
+			}
 			}
 		}
 	}

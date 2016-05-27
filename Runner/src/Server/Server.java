@@ -22,11 +22,7 @@ import GUI.Game;
 
 public class Server {
 
-    private InetSocketAddress port;
-
-
     private HttpServer server;
-
 
      public Server(Game game) throws Exception {
 		server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -35,32 +31,10 @@ public class Server {
 		server.setExecutor(null);
 		
 	}
-	/*
-	private static SSLContext createSSLContext() throws Exception {
-		
-		SSLContext sslContext = SSLContext.getInstance("TLS");
-	    char[] keystorePassword = "123456".toCharArray();
-	    KeyStore ks = KeyStore.getInstance("JKS");
-	    ks.load(new FileInputStream("assets/server.keys"), keystorePassword);
-	    KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-	    kmf.init(ks, keystorePassword);
-	    sslContext.init(kmf.getKeyManagers(), null, null);
-	    return sslContext;
-    }*/
 
     public void start()
     {
         server.start();
-    }
-
-    public InetSocketAddress getPort()
-    {
-        return port;
-    }
-
-    public void setPort(InetSocketAddress port)
-    {
-        this.port = port;
     }
 
 }
