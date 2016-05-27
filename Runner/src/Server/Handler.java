@@ -1,6 +1,7 @@
 package Server;
 
 
+		import GUI.*;
         import java.io.BufferedReader;
         import java.io.IOException;
         import java.io.InputStream;
@@ -19,12 +20,11 @@ package Server;
         import com.sun.net.httpserver.HttpExchange;
         import com.sun.net.httpserver.HttpHandler;
 
+
 public class Handler implements HttpHandler{
-
-
-    public Handler(){
-    	
-    	
+	Game game;
+    public Handler(Game game){
+    	this.game = game;
     }
 
 
@@ -35,28 +35,40 @@ public class Handler implements HttpHandler{
     	
     	Scanner sc = new Scanner(is,"UTF-8").useDelimiter("\n");
     	String path = t.getRequestURI().getPath();
-    	String response;
     	System.out.println(path);
     	if(path.endsWith("left"))
     		moveLeft();
     	if(path.endsWith("right"))
     		moveRight();
+    	
+    	String response = "This is the response";
+        t.sendResponseHeaders(200, response.length());
+        OutputStream os = t.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
     
     }
-
+/*
+    public void handle(HttpExchange t) throws IOException {
+        String response = "This is the response";
+        t.sendResponseHeaders(200, response.length());
+        OutputStream os = t.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }*/
 
 	private void moveRight() {
+		game.getAvatar().setVelX(2);
 		System.out.println("Right");
 	}
 
 
 	private void moveLeft() {
+		game.getAvatar().setVelX(-2);
 		System.out.println("Left");
 		
 	}
     
-  
-
-  
+ 
 
 }

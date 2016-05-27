@@ -11,11 +11,11 @@ import java.net.InetSocketAddress;
 public class Main {
 
     static public void main (String[] argr) throws Exception{
-
+/*
         System.out.println("entered main");
         Server server = new Server();
         server.start();
-
+*/
     }
 }
 

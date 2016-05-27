@@ -16,25 +16,28 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
 
+import GUI.Game;
+
+
 
 public class Server {
 
     private InetSocketAddress port;
 
 
+    private HttpServer server;
 
-    private HttpsServer server;
 
-
-     Server() throws Exception {
-		server = HttpsServer.create(new InetSocketAddress(443), 0);
-		server.setHttpsConfigurator(new HttpsConfigurator(createSSLContext()));
-		server.createContext("/api", new Handler());
+     public Server(Game game) throws Exception {
+		server = HttpServer.create(new InetSocketAddress(8000), 0);
+		//server.setHttpsConfigurator(new HttpsConfigurator(createSSLContext()));
+		server.createContext("/api", new Handler(game));
 		server.setExecutor(null);
 		
 	}
-	
+	/*
 	private static SSLContext createSSLContext() throws Exception {
+		
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 	    char[] keystorePassword = "123456".toCharArray();
 	    KeyStore ks = KeyStore.getInstance("JKS");
@@ -43,7 +46,7 @@ public class Server {
 	    kmf.init(ks, keystorePassword);
 	    sslContext.init(kmf.getKeyManagers(), null, null);
 	    return sslContext;
-    }
+    }*/
 
     public void start()
     {

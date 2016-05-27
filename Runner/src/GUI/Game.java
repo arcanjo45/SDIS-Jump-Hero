@@ -56,7 +56,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 		AudioPlayer musicPlayer = AudioPlayer.player;
 		try {
 			ContinuousAudioDataStream loop = new ContinuousAudioDataStream(getLoadFiles().getBacksound().getData());
-			musicPlayer.start(loop);
+			//musicPlayer.start(loop);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

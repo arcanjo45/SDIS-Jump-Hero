@@ -1,8 +1,9 @@
 package GUI;
 
 import java.awt.Dimension;
-
+import Server.*;
 import javax.swing.JFrame;
+
 
 /**
  * Constructor
@@ -16,8 +17,9 @@ public class Runner {
 	 * Main function
 	 * 
 	 * @param args
+	 * @throws Exception 
 	 */
-	public static void main(String args[]){
+	public static void main(String args[]) throws Exception{
 		JFrame f = new JFrame(TITLE);
 		
 		Game game = new Game();		
@@ -30,6 +32,15 @@ public class Runner {
 		f.pack();
 		f.setVisible(true);
 		
+		
+        System.out.println("entered main");
+        Server server = new Server(game);
+        server.start();
+        
+    	
+		
 	}
+	
+	
 	
 }
