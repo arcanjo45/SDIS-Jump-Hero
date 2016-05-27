@@ -59,7 +59,7 @@ public class Handler implements HttpHandler{
     		moveRight(playerNum-1);}
     	if(path.endsWith("connect"))
     		response = connect();
-    	
+   		   	
     	
         t.sendResponseHeaders(200, response.length());
         OutputStream os = t.getResponseBody();
@@ -82,7 +82,10 @@ public class Handler implements HttpHandler{
 	}
 	
 	public String connect(){
-		
+		if( game.getListPlayers().size() >= 4){
+			System.out.println("Max Players in GAME!");
+			return "max";
+		}
 		int numPlayer = game.getListPlayers().size()+1;
 		game.startPlayer();
 		System.out.println("NewPlayer: "+numPlayer);
