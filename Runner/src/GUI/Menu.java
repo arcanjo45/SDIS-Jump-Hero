@@ -44,6 +44,11 @@ public class Menu {
 			g.drawString(options[3], 175, 400);
 			break;
 		}
+		for (int i = 0; i < game.getListPlayers().size(); i++){
+			if (game.getListPlayers().get(i) != null)
+				g.drawImage(game.getLoadFiles().getCheck(), 400, (170+i*30), 15, 15, game);
+			else g.drawImage(game.getLoadFiles().getNotCheck(), 400, (170+i*30), 15, 15, game);
+		}
 	}
 	
 	/**
@@ -72,6 +77,7 @@ public class Menu {
 	public void nextState() {
 		switch (option){
 		case 0:
+			game.resetvariaveis();
 			Game.State = Game.STATE.GAME;
 			break;
 		case 1:

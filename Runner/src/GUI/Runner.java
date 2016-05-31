@@ -1,6 +1,8 @@
 package GUI;
 
 import java.awt.Dimension;
+
+
 import Server.*;
 import javax.swing.JFrame;
 
@@ -32,15 +34,9 @@ public class Runner {
 		f.pack();
 		f.setVisible(true);
 		
-		
-        System.out.println("entered main");
         Server server = new Server(game);
-        server.start();
-        
-    	
+        server.start();     	
 		
-	}
-	
-	
+	}	
 	
 }

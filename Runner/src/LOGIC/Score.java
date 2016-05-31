@@ -38,17 +38,20 @@ public class Score {
 			TempPoint.frame();
 			if (TempPoint.getY() >= (470 - (game.getListbox().getFloor()[TempPoint.getColuna()] * 50))) //colide
 				TempPoint.setVelY(0);
-			if (TempPoint.getVelY() == 0) //continuar a colidir com a listas de de caixas que est�o no chao
+			if (TempPoint.getVelY() == 0) //continuar a colidir com a listas de de caixas que estao no chao
 				TempPoint.setY(470 - (game.getListbox().getFloor()[TempPoint.getColuna()] * 50));
 			if (Physics.Collision(game.getListbox().getlbox(), TempPoint)) //se uma caixa lhe cair em cima remove
 				removePoint(TempPoint);
 			for(int j=0;j<game.getListPlayers().size();j++){
-			if (Physics.Collision(TempPoint, game.getListPlayers().get(j))){
-				AudioPlayer player = AudioPlayer.player;
-				player.start(game.getLoadFiles().getBoxsound());
-				score += TempPoint.getValue();
-				removePoint(TempPoint);
-			}
+				if (game.getListPlayers().get(j) == null)
+					continue;
+					if (Physics.Collision(TempPoint, game.getListPlayers().get(j))){
+						AudioPlayer player = AudioPlayer.player;
+						player.start(game.getLoadFiles().getBoxsound());
+						game.getListPlayers().get(j).setScore((game.getListPlayers().get(j).getScore()+TempPoint.getValue()));
+						score += TempPoint.getValue();
+						removePoint(TempPoint);
+					}
 			}
 		}
 	}

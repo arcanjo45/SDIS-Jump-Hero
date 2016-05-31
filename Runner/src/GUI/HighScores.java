@@ -106,10 +106,37 @@ public class HighScores {
 		else if (Game.State == STATE.NEWHIGHSCORE){
 			g.setFont(new Font("Snap ITC", Font.BOLD, 30)); 
 			g.setColor(Color.WHITE);
-			g.drawString("Score", 100, 150);
+			g.drawString("NewTeamScore", 100, 150);
 			g.drawString(Integer.toString(game.getScore().getScore()), 100, 200);
-			g.drawString("Nickname", 100, 250);
+			g.drawString("TeamNickname", 100, 250);
 			g.drawString(newNickname, 100, 300);
+		}
+		else if (Game.State == STATE.PLAYERSCORE){
+			g.setFont(new Font("Snap ITC", Font.BOLD, 30)); 
+			g.setColor(Color.WHITE);
+			g.drawString("TeamScore", 100, 150);
+			g.drawString(Integer.toString(game.getScore().getScore()), 100, 200);
+			for (int i = 0; i < game.listPlayers.size(); i++){
+				if (game.getListPlayers().get(i) != null && !game.listPlayers.get(i).getalive()){
+					switch (i){
+					case 0:
+						g.drawImage(game.getLoadFiles().getAvatar1R()[0], 100, 250, 30, 30, game);
+						break;
+					case 1:
+						g.drawImage(game.getLoadFiles().getAvatar2R()[0], 100, 300, 30, 30, game);
+						break;
+					case 2:
+						g.drawImage(game.getLoadFiles().getAvatar3R()[0], 100, 350, 30, 30, game);
+						break;
+					case 3:
+						g.drawImage(game.getLoadFiles().getAvatar4R()[0], 100, 400, 30, 30, game);
+						break;
+					default: 
+						break;						
+					}
+					g.drawString(Integer.toString(game.listPlayers.get(i).getScore()), 150, (275 + i*50));
+				}
+			}
 		}
 	}
 

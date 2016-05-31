@@ -14,7 +14,7 @@ public class ListBox {
 	int box = 0;
 	int nBox = 1;
 	int cont = 0;
-	boolean linha = false;
+	boolean line = false;
 	Box TempBox;
 	int narea = 0;
 	Game game;
@@ -60,7 +60,7 @@ public class ListBox {
 			if (floor[j] < 1)
 				break;
 			else if (j == 9)
-				this.linha = true;
+				this.line = true;
 		}
 	}
 
@@ -119,7 +119,7 @@ public class ListBox {
 			TempBox = lbox.get(i);
 			TempBox.draw(g); 			
 		}
-		if (linha){
+		if (line){
 			cont++;
 			if (cont >=25){
 				for (int l = 0; l < floor.length; l++)
@@ -127,11 +127,16 @@ public class ListBox {
 				for (int k = 0; k < game.getScore().getListpoint().size(); k++)
 					if (game.getScore().getListpoint().get(k).getVelY() == 0)
 						game.getScore().getListpoint().get(k).setY(game.getScore().getListpoint().get(k).getY()+50);
-				linha = false;
+				line = false;
 				cont = 0;	
-				game.getScore().setScore(game.getScore().getScore() + 1);
+				for (int i = 0; i < game.getListPlayers().size(); i++){
+					if(game.getListPlayers().get(i) == null || !game.getListPlayers().get(i).getalive())continue;
+					game.getListPlayers().get(i).setScore(game.getListPlayers().get(i).getScore()+1);
+					game.getScore().setScore(game.getScore().getScore() + 1);
+				}
 				
 				for(int i=0;i<game.getListPlayers().size();i++){
+					if(game.getListPlayers().get(i) == null)continue;
 					game.getListPlayers().get(i).setY(game.getListPlayers().get(i).getY() + 50);
 				}
 				

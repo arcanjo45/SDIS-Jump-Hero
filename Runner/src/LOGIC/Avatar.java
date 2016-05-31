@@ -13,8 +13,14 @@ public class Avatar {
 	private int velX;
 	private int velY;
 	boolean up = false;
+	boolean alive;
+	int score;
 	int nextimg = 0;
 	BufferedImage lastimg;
+	private BufferedImage[] avatarR;
+	private BufferedImage[] avatarL;
+	private BufferedImage[] avatarRU;
+	private BufferedImage[] avatarLU;
 	Game game;
 
 	/**
@@ -25,13 +31,19 @@ public class Avatar {
 	 * @param firstimg	image
 	 * @param game
 	 */
-	public Avatar(int x, int y, BufferedImage firstimg, Game game) {
+	public Avatar(int x, int y, BufferedImage firstimg, BufferedImage[] avatarR, BufferedImage[] avatarL, BufferedImage[] avatarRU, BufferedImage[] avatarLU, Game game) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.velX = 0;
 		this.velY = -2;
+		this.alive = false;
+		this.score = 0;
 		this.lastimg = firstimg;
+		this.avatarR = avatarR;
+		this.avatarL = avatarL;
+		this.avatarRU = avatarRU;
+		this.avatarLU = avatarLU;
 		this.game = game;
 	}
 
@@ -186,16 +198,10 @@ public class Avatar {
 			if (imgYfinal <= imgYinicial)
 				this.y = imgYfinal;
 			else this.y = imgYinicial;
-		}			
-		if (Physics.Collision(this, game.getListbox().getlbox())){
-			if (game.getScore().getScore() > game.getHighscores().getListPlayer().get(6).getScore()){
-				Game.State = Game.STATE.NEWHIGHSCORE;
-			}	
-			else {
-				game.resetvariaveis();
-				Game.State = Game.STATE.HIGHSCORE;
-			}
-		}
+		}	
+
+		if (Physics.Collision(this, game.getListbox().getlbox()))
+			setAlive(false);
 
 	}
 
@@ -209,18 +215,18 @@ public class Avatar {
 			nextimg = 0;
 		if (velX > 0){
 			if (up)
-				g.drawImage(game.getLoadFiles().getAvatarRU()[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
+				g.drawImage(avatarRU[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
 			else {
-				g.drawImage(game.getLoadFiles().getAvatarR()[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
-				lastimg = game.getLoadFiles().getAvatarR()[0];
+				g.drawImage(avatarR[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
+				lastimg = avatarR[0];
 			}
 		}
 		else if (velX < 0){
 			if (up)
-				g.drawImage(game.getLoadFiles().getAvatarLU()[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
+				g.drawImage(avatarLU[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
 			else {
-				g.drawImage(game.getLoadFiles().getAvatarL()[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
-				lastimg = game.getLoadFiles().getAvatarL()[0];
+				g.drawImage(avatarL[nextimg], (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
+				lastimg = avatarL[0];
 			}
 		}	
 		else g.drawImage(lastimg, (int) this.getX(), (int) (this.getY() + 2 * game.getListbox().getCont()), 25, 25, game);
@@ -243,6 +249,22 @@ public class Avatar {
 	public int getY() {
 		return y;
 	}	
+	
+	/**
+	 * 
+	 * @return alive
+	 */
+	public boolean getalive() {
+		return alive;
+	}
+	
+	/**
+	 * 
+	 * @return score
+	 */
+	public int getScore() {
+		return score;
+	}
 	
 	/**
 	 * 
@@ -274,6 +296,22 @@ public class Avatar {
 	 */
 	public void setVelY(int velY) {
 		this.velY = velY;
+	}
+	
+	/**
+	 * 
+	 * @param alive
+	 */
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+	
+	/**
+	 * 
+	 * @param score
+	 */
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 }
